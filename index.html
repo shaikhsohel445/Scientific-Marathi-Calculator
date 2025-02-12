@@ -38,51 +38,85 @@
     <div class="calculator">
         <input type="text" id="display" class="display" readonly>
         <br>
-        <button class="btn" onclick="clearDisplay()">अ.सा</button>
+        <button class="btn" onclick="clearDisplay()">C</button>
+        <button class="btn" onclick="deleteLast()">⌫</button>
+        <button class="btn" onclick="appendValue('(')">(</button>
+        <button class="btn" onclick="appendValue(')')">)</button>
+        <br>
         <button class="btn" onclick="appendValue('π')">π</button>
         <button class="btn" onclick="appendValue('e')">e</button>
         <button class="btn" onclick="appendValue('^')">^</button>
-        <button class="btn" onclick="appendValue('sqrt(')">√</button>
+        <button class="btn" onclick="appendValue('%')">%</button>
         <br>
-        <button class="btn" onclick="appendValue('७')">७</button>
-        <button class="btn" onclick="appendValue('८')">८</button>
-        <button class="btn" onclick="appendValue('९')">९</button>
+        <button class="btn" onclick="appendValue('7')">७</button>
+        <button class="btn" onclick="appendValue('8')">८</button>
+        <button class="btn" onclick="appendValue('9')">९</button>
         <button class="btn" onclick="appendValue('+')">+</button>
         <br>
-        <button class="btn" onclick="appendValue('४')">४</button>
-        <button class="btn" onclick="appendValue('५')">५</button>
-        <button class="btn" onclick="appendValue('६')">६</button>
+        <button class="btn" onclick="appendValue('4')">४</button>
+        <button class="btn" onclick="appendValue('5')">५</button>
+        <button class="btn" onclick="appendValue('6')">६</button>
         <button class="btn" onclick="appendValue('-')">-</button>
         <br>
-        <button class="btn" onclick="appendValue('१')">१</button>
-        <button class="btn" onclick="appendValue('२')">२</button>
-        <button class="btn" onclick="appendValue('३')">३</button>
+        <button class="btn" onclick="appendValue('1')">१</button>
+        <button class="btn" onclick="appendValue('2')">२</button>
+        <button class="btn" onclick="appendValue('3')">३</button>
         <button class="btn" onclick="appendValue('*')">×</button>
         <br>
-        <button class="btn" onclick="appendValue('०')">०</button>
+        <button class="btn" onclick="appendValue('0')">०</button>
         <button class="btn" onclick="appendValue('.')">.</button>
         <button class="btn" onclick="calculateResult()">=</button>
         <button class="btn" onclick="appendValue('/')">÷</button>
         <br>
+        <button class="btn" onclick="appendValue('sqrt(')">√</button>
         <button class="btn" onclick="appendValue('sin(')">sin</button>
         <button class="btn" onclick="appendValue('cos(')">cos</button>
         <button class="btn" onclick="appendValue('tan(')">tan</button>
+        <br>
         <button class="btn" onclick="appendValue('log(')">log</button>
+        <button class="btn" onclick="appendValue('ln(')">ln</button>
+        <button class="btn" onclick="appendValue('exp(')">exp</button>
+        <button class="btn" onclick="appendValue('abs(')">|x|</button>
     </div>
     <script>
         function appendValue(value) {
             document.getElementById('display').value += value;
         }
+
         function clearDisplay() {
             document.getElementById('display').value = '';
         }
+
+        function deleteLast() {
+            let display = document.getElementById('display');
+            display.value = display.value.slice(0, -1);
+        }
+
         function calculateResult() {
             try {
-                let expression = document.getElementById('display').value.replace(/√/g, 'Math.sqrt').replace(/π/g, 'Math.PI').replace(/e/g, 'Math.E').replace(/log/g, 'Math.log').replace(/sin/g, 'Math.sin').replace(/cos/g, 'Math.cos').replace(/tan/g, 'Math.tan').replace(/\^/g, '**');
-                document.getElementById('display').value = eval(expression);
+                let expression = document.getElementById('display').value
+                    .replace(/√/g, 'Math.sqrt')
+                    .replace(/π/g, 'Math.PI')
+                    .replace(/e/g, 'Math.E')
+                    .replace(/log/g, 'Math.log10')
+                    .replace(/ln/g, 'Math.log')
+                    .replace(/exp/g, 'Math.exp')
+                    .replace(/sin/g, 'Math.sin')
+                    .replace(/cos/g, 'Math.cos')
+                    .replace(/tan/g, 'Math.tan')
+                    .replace(/abs/g, 'Math.abs')
+                    .replace(/\^/g, '**');
+                
+                let result = eval(expression);
+                document.getElementById('display').value = convertToMarathi(result);
             } catch (error) {
                 alert('अवैध गणना!');
             }
+        }
+
+        function convertToMarathi(num) {
+            let marathiNumbers = {'0':'०', '1':'१', '2':'२', '3':'३', '4':'४', '5':'५', '6':'६', '7':'७', '8':'८', '9':'९'};
+            return num.toString().replace(/[0123456789]/g, d => marathiNumbers[d]);
         }
     </script>
 </body>
